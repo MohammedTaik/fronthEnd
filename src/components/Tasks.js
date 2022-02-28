@@ -1,9 +1,12 @@
+import axios from "axios";
 import React from "react";
 
 const Tasks = ({todos , setTodos , setEditTodo }) =>{
 
     const handleDelete=({id})=>{
         setTodos(todos.filter((todo) => todo.id !== id));
+        axios.delete('http://localhost:5000/Tasks/'+id)
+        .then(response => console.log('daleted'))
     }
     
     const handleComplete =(todo)=>{
@@ -11,15 +14,13 @@ const Tasks = ({todos , setTodos , setEditTodo }) =>{
             todos.map((item)=>{
                 if(item.id === todo.id){
                     return{
-                        ...item,completed :!item.completed
+                        ...item,statue :!item.statue
                     }
                 } 
                 return item;
             })
         )
     }
-
-
 
    const handleEdit =({id}) =>{
        const findTodo = todos.find((todo) => todo.id ===id);
@@ -35,9 +36,9 @@ const Tasks = ({todos , setTodos , setEditTodo }) =>{
    
                <button className="buttonEdit" onClick={()=>handleEdit(todo)}><h6>Edit</h6></button>
               
-               <input className={`list ${todo.completed ? "finish" :""}`}
+               <input className={`list ${todo.statue ? "finish" :""}`}
                type="text"
-               value={todo.task}
+               value={todo.details}
                onChange={(event) => event.preventDefault()}
                />
           <div>

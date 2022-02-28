@@ -1,33 +1,75 @@
+import axios from "axios";
 import React, { useEffect } from "react";
-import {v4 as uuidv4} from "uuid";
+
 
 const Add =({input , setInput ,todos,setTodos ,setEditTodo ,editTodo})=>{
-    const  updateTodo =(task , id , completed)=>{
-        const newTodo = todos.map((todo)=>
-            todo.id === id ? {task , id ,completed} : todo
-       );
+
+    const  updateTodo =(details , id , statue)=>{
+        const newTodo = todos.map((todo)=>(
+            todo.id === id ? {details , id ,statue} : todo
+
+        ));
+
        setTodos(newTodo);
        setEditTodo("");
-    }
-     const onInputChange = (event) =>{
-         setInput(event.target.value);
-     };
+       }
 
-     useEffect(()=>{
+    const onInputChange = (event) =>{
+           setInput(event.target.value);
+         };
+
+    useEffect(()=>{
         if(editTodo) {
-            setInput(editTodo.task);
-        } else {
-            setInput("");
-        }
-     },[setInput,editTodo]);
+            setInput(editTodo.details);
+        } 
+        },[setInput,editTodo]);
 
-     const onClickSubmit = (event) =>{
+    const onClickSubmit = (event) =>{
          event.preventDefault();
+         
          if(!editTodo){
-         setTodos([...todos,{id: uuidv4(), task: input , completed: false}]);
-         setInput("");
+           
+
+            var body ={
+                "id" :Math.floor(Math.random() * 10000),
+                "statue" : "not yet",
+                "details" : input 
+            }
+            console.log(body.id)
+            axios({
+                method :'post',
+               url :'http://localhost:5000/Tasks',
+               data : body
+               })
+                .then(response => {
+                    console.log(response.data)
+                    }).catch(error =>{
+                        console.log(error)
+                    })
+            setTodos([...todos,body]);
+            setInput("");
+
         }else{
-            updateTodo(input , editTodo.id ,editTodo.completed)
+            updateTodo(input , editTodo.id ,editTodo.statue)
+            
+            
+        var bod ={
+            "statue" : editTodo.statue ,
+            "details" : input 
+        }
+        axios({
+            method :'put',
+            url :'http://localhost:5000/Tasks'+editTodo.id,
+            data : bod
+            })
+            .then(response => {
+                console.log(response.data)
+                }).catch(error =>{
+                    console.log(error)
+            })
+
+
+            setInput("");
         }
      };
 
@@ -42,7 +84,7 @@ const Add =({input , setInput ,todos,setTodos ,setEditTodo ,editTodo})=>{
           onChange={onInputChange}
          />
           <button className="icon-plus" type="submit"
-          
+ 
           >
           </button>
         </form>

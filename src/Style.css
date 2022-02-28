@@ -14,11 +14,14 @@ body{
     color: #474646;
     font-size: 25px;
     text-transform: uppercase;
+    
 }
 .buttonEdit:hover{
     font-size:26px ;
     opacity: 2;
     cursor: pointer;
+    letter-spacing: 1px;
+    transition: 0.2s;
 }
 .list{
     height: 19px;
@@ -26,6 +29,7 @@ body{
     text-align: center;
     border: aliceblue;
     background-color: aliceblue;
+    width: 300px;
 }
 .task input:focus{
     outline: none;
@@ -74,18 +78,12 @@ h1{
     transition: 0.2s;
     cursor: pointer;
 }
-
-.icon-star, .icon-trash{
+ .icon-trash{
     opacity: 0.4;
     font-size: 27px;
     color: #000000;
 }
 
-.icon-star:hover{
-    color: orange;
-    opacity: 1;
-    font-size: 29px;
-}
 
 .icon-trash{
     margin-right: 10px;
@@ -102,11 +100,11 @@ opacity: 1;
 
 .icon-file_done{
     color: rgb(168, 3, 3);
-    font-size: 30px;
+    font-size:29px;
 }
 
 .icon-file_done:hover{
-    font-size: 32px;
+    font-size: 31px;
     opacity: 1;
 }
 
