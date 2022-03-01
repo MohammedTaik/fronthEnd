@@ -5,18 +5,21 @@ import Header from "./Header";
 import Tasks from "./Tasks";
 import axios from "axios";
 
+
 const Todo = () =>{
     
     const [input,setInput] = useState("");
     const [todos,setTodos] = useState([]);
     const [editTodo, setEditTodo ] =useState (null);
-    const [test ,setTest] = useState("");
 
-    
     useEffect(()=>{
+        
             axios({
                 method:'get',
-                url:"http://localhost:5000/Tasks"}).then((reponse)=>{    
+                url:"http://localhost:5000/api/Todo",
+                dataType: "json",
+               
+            }).then((reponse)=>{
                  console.log(reponse.data) 
                 setTodos(reponse.data) 
                
@@ -27,9 +30,8 @@ const Todo = () =>{
     return(
         <div>
 
-         <Header 
-         test = {test}
-         setTest={setTest}/>
+         <Header/>
+      
 
          <Add
          input={input}

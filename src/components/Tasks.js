@@ -5,22 +5,62 @@ const Tasks = ({todos , setTodos , setEditTodo }) =>{
 
     const handleDelete=({id})=>{
         setTodos(todos.filter((todo) => todo.id !== id));
-        axios.delete('http://localhost:5000/Tasks/'+id)
+        axios.delete('http://localhost:5000/api/Todo/'+id)
         .then(response => console.log('daleted'))
     }
     
+    
+
     const handleComplete =(todo)=>{
         setTodos(
             todos.map((item)=>{
                 if(item.id === todo.id){
-                    return{
-                        ...item,statue :!item.statue
+                    console.log(item.test , item.satatue)
+                    if(item.statue === "not yet"){
+
+                        var body ={
+                            
+                            "statue" : 'done                ' ,
+                            "details" : item.details 
+                            }
+                        axios({
+                            method :'put',
+                            url :'http://localhost:5000/api/Todo/'+ item.id,
+                            data : body
+                            })
+                            .then(response => {
+                                }).catch(error =>{
+                                    console.log(error)
+                             })
+
+                       item.statue = "done" 
+                       
+                    }else{
+                        var body2 ={
+                            
+                            "statue" : "not yet" ,
+                            "details" : item.details 
+                            }
+                        axios({
+                            method :'put',
+                            url :'http://localhost:5000/api/Todo/'+ item.id,
+                            data : body2
+                            })
+                            .then(response => {
+                                }).catch(error =>{
+                                    console.log(error)
+                             })
+                       item.statue = "not yet"
                     }
-                } 
+                                  
+                   }
                 return item;
-            })
+
+                } 
+                
+            )
         )
-    }
+        }
 
    const handleEdit =({id}) =>{
        const findTodo = todos.find((todo) => todo.id ===id);
@@ -36,9 +76,9 @@ const Tasks = ({todos , setTodos , setEditTodo }) =>{
    
                <button className="buttonEdit" onClick={()=>handleEdit(todo)}><h6>Edit</h6></button>
               
-               <input className={`list ${todo.statue ? "finish" :""}`}
+               <input className={`list ${todo.statue.trim()==='done' ? "finish" :""}`}
                type="text"
-               value={todo.details}
+               value={todo.details.trim()}
                onChange={(event) => event.preventDefault()}
                />
           <div>
